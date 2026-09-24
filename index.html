@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DBS</title>
+<meta name="theme-color" content="#171313">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="DBS">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101010;font-family:Arial,sans-serif;color:#fff}
+#app{max-width:430px;margin:0 auto;min-height:100vh;background:#181514}
+.top{height:64px;padding:20px;font-weight:700}
+.hero{min-height:290px;padding:55px 24px;background:linear-gradient(135deg,#81401d,#dda01c,#382318)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 6px;padding:24px 12px}
+.item{text-align:center;font-size:12px;cursor:pointer}
+.icon{width:52px;height:52px;border:1px solid #aaa;border-radius:13px;margin:0 auto 8px;display:grid;place-items:center;font-size:23px}
+.btn{width:calc(100% - 32px);margin:16px;padding:17px;border:0;border-radius:3px;background:#df432f;color:#fff;font-size:17px}
+.login{padding:28px 24px;text-align:center;min-height:100vh;background:linear-gradient(#333,#080808)}
+.avatar{margin:100px auto 12px;width:86px;height:86px;border-radius:50%;background:#ddd;color:#777;display:grid;place-items:center;font-size:38px}
+input,textarea{width:100%;padding:16px;margin:9px 0;border:1px solid #bbb;border-radius:3px;font-size:16px}
+.light,.page{background:#f7f7f7;color:#222}
+.welcome{padding:55px 24px 32px;background:linear-gradient(135deg,#df9b18,#f1bd21)}
+.tabs{display:flex}
+.tabs div{width:50%;padding:18px;text-align:center;border-bottom:1px solid #ccc}
+.tabs div:first-child{border-bottom:3px solid #d99b16}
+.account{padding:24px 22px}
+.balance{text-align:right;font-size:24px}
+.card,.choice{margin:10px 17px;padding:18px;background:#fff;color:#222;border:1px solid #ddd;border-radius:7px}
+.choice{display:block;width:calc(100% - 34px);text-align:left;font-size:16px}
+.page{min-height:calc(100vh - 64px);padding:18px 0}
+.page h2,.page p{padding-left:18px;padding-right:18px}
+.back{font-size:27px;margin-right:15px;cursor:pointer}
+.check{text-align:center;font-size:70px;color:#2a5}
+.scan{height:300px;margin:15px;background:#252525;color:#fff;display:grid;place-items:center;text-align:center;border-radius:8px}
+.small{font-size:12px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function(){
+"use strict";
+var app=document.getElementById("app");
+var balance="₹15,56,431.49";
+var uid="9985533631";
+
+function set(html){app.innerHTML=html;window.scrollTo(0,0)}
+function header(title,back){
+  return '<div class="top"><span class="back" data-go="'+back+'">‹</span>'+title+'</div>';
+}
+function bind(){
+  var nodes=document.querySelectorAll("[data-go]");
+  for(var i=0;i<nodes.length;i++){
+    nodes[i].onclick=function(){go(this.getAttribute("data-go"));};
+  }
+}
+function render(html){set(html);bind();}
+
+function landing(){
+ render(
+ '<div class="top">✦ digibank <span class="small">by DBS</span></div>'+
+ '<div class="hero"><h1>Live more</h1><p>Simple everyday banking from your phone.</p></div>'+
+ '<div class="grid">'+
+ tile("＋","Add Money","login")+tile("▣","Pay Bills","login")+
+ tile("⌗","Scan & Pay","login")+tile("⇄","Transfer","login")+
+ tile("₹","Personal Loan","login")+tile("◎","Overseas Transfer","login")+
+ tile("▤","digiPortfolio","login")+tile("⋮","More","login")+
+ '</div><button class="btn" data-go="login">LOGIN</button>'
+ );
+}
+function tile(icon,label,target){
+ return '<div class="item" data-go="'+target+'"><div class="icon">'+icon+'</div>'+label+'</div>';
+}
+function login(){
+ render('<div class="login"><b>✦ digibank <span class="small">by DBS</span></b>'+
+ '<div class="avatar">♙</div><div>'+uid+'</div>'+
+ '<input id="pw" type="password" placeholder="Password" autocomplete="off">'+
+ '<div style="text-align:left;margin-top:8px">Trouble logging in?</div>'+
+ '<button class="btn" data-go="home">LOGIN</button></div>');
+}
+function home(){
+ render('<div class="top">☰<span style="float:right">♧　▢</span></div>'+
+ '<div class="welcome"><h1>Welcome to<br>digibank</h1><p>Enjoy a convenient way to bank on the go.</p></div>'+
+ '<div class="grid light">'+tile("＋","Add Money","addmoney")+tile("▣","Pay Bills","bills")+
+ tile("⌗","Scan & Pay","scan")+tile("⇄","Transfer","transfer")+'</div>'+
+ '<div class="tabs light"><div>ACCOUNTS</div><div data-go="insights">INSIGHTS</div></div>'+
+ '<div class="account light"><h3>Account　›</h3><b>DIGISAVINGS</b><p>********45508</p>'+
+ '<div class="balance">Balance<br><b>'+balance+'</b></div></div>'+
+ '<div class="card" data-go="upi"><b>UPI Linked Accounts / Credit Cards</b>　›</div>'+
+ '<div class="card" data-go="deposits"><b>Deposits</b>　›</div>'+
+ '<div class="grid">'+tile("₹","Personal Loan","loan")+tile("◎","Overseas Transfer","overseas")+
+ tile("▤","digiPortfolio","portfolio")+tile("⋮","More","more")+'</div>');
+}
+function transfer(){
+ render(header("Transfer","home")+'<div class="page"><h2>Transfer Money</h2>'+
+ choice("To Bank Account / Beneficiary","beneficiaries")+
+ choice("To UPI ID","amount")+
+ choice("To Own Account","amount")+
+ choice("Overseas Transfer","overseas")+'</div>');
+}
+function beneficiaries(){
+ render(header("Beneficiaries","transfer")+'<div class="page"><h2>Select Beneficiary</h2>'+
+ choice("Saved Beneficiary ••••1024","amount")+
+ choice("＋ Add New Beneficiary","addbeneficiary")+'</div>');
+}
+function addbeneficiary(){
+ render(header("Add Beneficiary","beneficiaries")+'<div class="page" style="padding:18px">'+
+ '<input placeholder="Beneficiary name"><input placeholder="Account number" inputmode="numeric">'+
+ '<input placeholder="Re-enter account number" inputmode="numeric"><input placeholder="IFSC code">'+
+ '<button class="btn" style="width:100%;margin:16px 0" data-go="amount">CONTINUE</button></div>');
+}
+function amount(){
+ render(header("Transfer","transfer")+'<div class="page" style="padding:18px"><h2>Enter amount</h2>'+
+ '<input inputmode="decimal" placeholder="₹0"><textarea placeholder="Remarks (optional)"></textarea>'+
+ '<button class="btn" style="width:100%;margin:16px 0" data-go="review">CONTINUE</button></div>');
+}
+function review(){
+ render(header("Review","amount")+'<div class="page"><h2>Review</h2>'+
+ '<div class="card"><b>Payment details</b><p>From: DIGISAVINGS ••••5508</p><p>Available balance: '+balance+'</p></div>'+
+ '<button class="btn" data-go="success">CONFIRM</button></div>');
+}
+function success(){
+ render(header("Transfer","home")+'<div class="page"><div class="check">✓</div>'+
+ '<h2 style="text-align:center">Successful</h2><p style="text-align:center">Request completed</p>'+
+ '<h2 style="text-align:center">'+balance+'</h2><button class="btn" data-go="home">DONE</button></div>');
+}
+function bills(){
+ var names=["Electricity","Mobile Postpaid","DTH","Broadband","Gas","Credit Card","Insurance","Water"];
+ var s=header("Pay Bills","home")+'<div class="page"><h2>Bill Payments</h2>';
+ for(var i=0;i<names.length;i++)s+=choice(names[i],"billamount");
+ render(s+'</div>');
+}
+function billamount(){
+ render(header("Bill Payment","bills")+'<div class="page" style="padding:18px"><input placeholder="Consumer / account number">'+
+ '<input inputmode="decimal" placeholder="Amount"><button class="btn" style="width:100%;margin:16px 0" data-go="review">CONTINUE</button></div>');
+}
+function scan(){
+ render(header("Scan & Pay","home")+'<div class="page"><div class="scan">⌜　　　　　⌝<br>Position QR inside frame<br>⌞　　　　　⌟</div>'+
+ choice("Enter payee manually","amount")+'</div>');
+}
+function generic(title,back){
+ render(header(title,back||"home")+'<div class="page"><h2>'+title+'</h2>'+
+ '<div class="card">Select an option to continue.</div>'+choice("View Details","success")+
+ choice("Explore Options","success")+choice("Service Requests","success")+'</div>');
+}
+function choice(label,target){return '<button class="choice" data-go="'+target+'">'+label+'　›</button>';}
+
+function go(name){
+ var routes={
+ landing:landing,login:login,home:home,transfer:transfer,beneficiaries:beneficiaries,
+ addbeneficiary:addbeneficiary,amount:amount,review:review,success:success,bills:bills,
+ billamount:billamount,scan:scan
+ };
+ if(routes[name]){routes[name]();return;}
+ var titles={
+ addmoney:"Add Money",insights:"Insights",upi:"UPI Linked Accounts",deposits:"Deposits",
+ loan:"Personal Loan",overseas:"Overseas Transfer",portfolio:"digiPortfolio",more:"More"
+ };
+ generic(titles[name]||"DBS","home");
+}
+landing();
+})();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("./sw.js").catch(function () {});
+  });
+}
+</script>
+
+</body>
+</html>
